@@ -1,19 +1,24 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// Primary environment variables
+let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+let supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+// Fallback for production if environment variables are missing
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn("Environment variables missing, using production fallback")
+  supabaseUrl = "https://gcbzgtwvuddrmvklkeep.supabase.co"
+  supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
+}
 
 // Debug environment variables
 console.log("Supabase URL:", supabaseUrl ? "✓ Set" : "✗ Missing")
 console.log("Supabase Anon Key:", supabaseAnonKey ? "✓ Set" : "✗ Missing")
+console.log("Using fallback:", !process.env.NEXT_PUBLIC_SUPABASE_URL ? "Yes" : "No")
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Environment variables status:", {
-    NEXT_PUBLIC_SUPABASE_URL: supabaseUrl || "undefined",
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: supabaseAnonKey ? "[REDACTED]" : "undefined"
-  })
   throw new Error(
-    "Missing Supabase environment variables. Please check your Vercel environment configuration."
+    "Critical error: Supabase configuration failed completely."
   )
 }
 
