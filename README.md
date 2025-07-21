@@ -5,9 +5,10 @@ A comprehensive, HIPAA-compliant web application for tracking blood pressure dur
 ## ✨ Features
 
 ### 🔐 **Secure Authentication**
-- OAuth integration with Google and Apple Sign-In
+- Demo credentials authentication for easy testing
 - HIPAA-compliant user management
 - Protected routes and session handling
+- OAuth ready (Google/Apple can be enabled if needed)
 
 ### 📊 **Health Data Management**
 - Blood pressure readings with contextual data
@@ -40,43 +41,43 @@ npm install
 
 ### 2. Environment Setup
 
-**Option A: Quick Setup (Recommended)**
+**Current Status: ✅ COMPLETE**
 ```bash
-# Run the setup script
-./setup.sh
+# Environment already configured with:
+✅ Supabase credentials
+✅ NextAuth demo authentication  
+✅ All required variables set
 ```
 
-**Option B: Manual Setup**
-```bash
-# Copy environment template
-cp .env.example .env.local
+### 3. Deploy Database Schema
 
-# Generate NextAuth secret
-openssl rand -base64 32
+**CRITICAL STEP - Deploy to your Supabase project:**
+```bash
+# 1. Go to: https://supabase.com/dashboard/project/gcbzgtwvuddrmvklkeep
+# 2. Click: SQL Editor
+# 3. Copy contents of database/schema.sql
+# 4. Paste and run to create all tables and policies
 ```
 
-### 3. Configure Services
-
-Follow the detailed setup guide in [`ENVIRONMENT_SETUP.md`](./ENVIRONMENT_SETUP.md) to configure:
-
-- **Supabase** - Database and real-time features
-- **Google OAuth** - Authentication provider  
-- **Apple OAuth** - Optional authentication provider
-
-### 4. Run Development Server
+### 4. Test Demo Authentication
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
+Open [http://localhost:3000](http://localhost:3000) and:
+1. Click "Sign In"
+2. Enter any email (e.g., `test@example.com`)
+3. Enter your name
+4. Click "Start Demo"
+5. Explore the dashboard and profile pages!
 
 ## 📚 Documentation
 
-- **[Environment Setup Guide](./ENVIRONMENT_SETUP.md)** - Complete setup instructions
+- **[Setup Checklist](./SETUP_CHECKLIST.md)** - ✅ Current status and deployment steps
+- **[Environment Setup Guide](./ENVIRONMENT_SETUP.md)** - Detailed configuration (for OAuth setup)
 - **[Product Requirements](./PRD.md)** - Detailed feature specifications
 - **[Development Guide](./CLAUDE.md)** - Technical implementation details
-- **[Setup Instructions](./SETUP.md)** - Additional configuration options
 
 ## 🏗 Tech Stack
 
@@ -115,21 +116,20 @@ See [`database/schema.sql`](./database/schema.sql) for the complete schema.
 
 ## 🔧 Environment Variables
 
-Required environment variables (see `.env.example` for template):
+✅ **Already configured** in `.env.local`:
 
 ```bash
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+# Supabase Configuration - CONFIGURED ✅
+NEXT_PUBLIC_SUPABASE_URL=https://gcbzgtwvuddrmvklkeep.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=[your-anon-key] ✅
+SUPABASE_SERVICE_ROLE_KEY=[your-service-role-key] ✅
 
-# NextAuth Configuration
-NEXTAUTH_SECRET=your-nextauth-secret
-NEXTAUTH_URL=http://localhost:3000
+# NextAuth Configuration - CONFIGURED ✅
+NEXTAUTH_SECRET=[generated] ✅
+NEXTAUTH_URL=http://localhost:3000 ✅
 
-# OAuth Providers
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
+# Demo Authentication - ACTIVE ✅
+# No OAuth providers needed for demo mode
 ```
 
 ## 🧪 Development
