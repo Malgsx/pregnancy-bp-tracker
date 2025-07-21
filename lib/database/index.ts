@@ -907,11 +907,12 @@ let dbInstance: DatabaseService | null = null
 
 export function getDatabase(): DatabaseService {
   if (!dbInstance) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    // Use fallback values if environment variables are missing
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gcbzgtwvuddrmvklkeep.supabase.co"
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
     
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Missing Supabase environment variables')
+      throw new Error('Critical error: Supabase configuration failed completely in database service')
     }
     
     dbInstance = new DatabaseService(supabaseUrl, supabaseAnonKey)

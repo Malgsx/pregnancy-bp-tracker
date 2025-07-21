@@ -1,11 +1,6 @@
 import { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { supabaseAdmin } from "@/lib/supabase"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -30,14 +25,14 @@ export const authOptions: AuthOptions = {
 
         // Try to create or update user profile in Supabase
         try {
-          const { data: existingProfile } = await supabase
+          const { data: existingProfile } = await supabaseAdmin
             .from("user_profiles")
             .select("*")
             .eq("user_id", user.id)
             .single()
 
           if (!existingProfile) {
-            await supabase.from("user_profiles").insert({
+            await supabaseAdmin.from("user_profiles").insert({
               user_id: user.id,
               email: user.email,
               full_name: user.name,
@@ -64,7 +59,7 @@ export const authOptions: AuthOptions = {
       if (session.user && user) {
         session.user.id = user.id
         // Add additional user data from Supabase if needed
-        const { data: profile } = await supabase
+        const { data: profile } = await supabaseAdmin
           .from("user_profiles")
           .select("*")
           .eq("user_id", user.id)
