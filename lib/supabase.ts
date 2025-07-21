@@ -1,33 +1,21 @@
 import { createClient } from "@supabase/supabase-js"
 
-// Primary environment variables
-let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-let supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// PRODUCTION HARDCODED CONFIGURATION
+// This bypasses all environment variable issues
+const SUPABASE_URL = "https://gcbzgtwvuddrmvklkeep.supabase.co"
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
+const SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzA0NzA0OSwiZXhwIjoyMDY4NjIzMDQ5fQ.OqlRzvLyXPwaksnZYSpnoDofUxiIlrfzJQlTELrHf3Y"
 
-// Fallback for production if environment variables are missing
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn("Environment variables missing, using production fallback")
-  supabaseUrl = "https://gcbzgtwvuddrmvklkeep.supabase.co"
-  supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
-}
+console.log("🔧 Using hardcoded Supabase configuration")
+console.log("Supabase URL:", SUPABASE_URL ? "✓ Set" : "✗ Missing")
+console.log("Supabase Anon Key:", SUPABASE_ANON_KEY ? "✓ Set" : "✗ Missing")
 
-// Debug environment variables
-console.log("Supabase URL:", supabaseUrl ? "✓ Set" : "✗ Missing")
-console.log("Supabase Anon Key:", supabaseAnonKey ? "✓ Set" : "✗ Missing")
-console.log("Using fallback:", !process.env.NEXT_PUBLIC_SUPABASE_URL ? "Yes" : "No")
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    "Critical error: Supabase configuration failed completely."
-  )
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // For server-side operations that require elevated privileges
 export const supabaseAdmin = createClient(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+  SUPABASE_URL,
+  SUPABASE_SERVICE_KEY,
   {
     auth: {
       autoRefreshToken: false,

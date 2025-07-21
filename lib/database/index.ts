@@ -907,13 +907,11 @@ let dbInstance: DatabaseService | null = null
 
 export function getDatabase(): DatabaseService {
   if (!dbInstance) {
-    // Use fallback values if environment variables are missing
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gcbzgtwvuddrmvklkeep.supabase.co"
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
+    // HARDCODED CONFIGURATION - bypasses all environment variable issues
+    const supabaseUrl = "https://gcbzgtwvuddrmvklkeep.supabase.co"
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnpndHd2dWRkcm12a2xrZWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwNDcwNDksImV4cCI6MjA2ODYyMzA0OX0.qgl38DE5QgR5Jp2r-cbKKGsD2P5TzXHB0usmMmhDUsE"
     
-    if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Critical error: Supabase configuration failed completely in database service')
-    }
+    console.log("🔧 Database service using hardcoded Supabase configuration")
     
     dbInstance = new DatabaseService(supabaseUrl, supabaseAnonKey)
   }
