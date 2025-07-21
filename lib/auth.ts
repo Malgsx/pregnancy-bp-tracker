@@ -1,27 +1,56 @@
 import { AuthOptions } from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import AppleProvider from "next-auth/providers/apple"
-import { SupabaseAdapter } from "@next-auth/supabase-adapter"
+import CredentialsProvider from "next-auth/providers/credentials"
 import { createClient } from "@supabase/supabase-js"
 
 const supabase = createClient(
-  process.env.SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 export const authOptions: AuthOptions = {
-  adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    AppleProvider({
-      clientId: process.env.APPLE_CLIENT_ID!,
-      clientSecret: process.env.APPLE_CLIENT_SECRET!,
+    CredentialsProvider({
+      name: "Demo User",
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "demo@example.com" },
+        name: { label: "Full Name", type: "text", placeholder: "Your Name" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email) {
+          return null
+        }
+
+        // Create a demo user object
+        const user = {
+          id: `demo-${credentials.email}`,
+          email: credentials.email,
+          name: credentials.name || credentials.email,
+          image: null,
+        }
+
+        // Try to create or update user profile in Supabase
+        try {
+          const { data: existingProfile } = await supabase
+            .from("user_profiles")
+            .select("*")
+            .eq("user_id", user.id)
+            .single()
+
+          if (!existingProfile) {
+            await supabase.from("user_profiles").insert({
+              user_id: user.id,
+              email: user.email,
+              full_name: user.name,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+          }
+        } catch (error) {
+          console.error("Error creating user profile:", error)
+        }
+
+        return user
+      },
     }),
   ],
   pages: {
@@ -54,33 +83,7 @@ export const authOptions: AuthOptions = {
       return token
     },
     async signIn({ user, account, profile }) {
-      // Custom sign-in logic
-      if (account?.provider === "google" || account?.provider === "apple") {
-        try {
-          // Check if user profile exists in Supabase
-          const { data: existingProfile } = await supabase
-            .from("user_profiles")
-            .select("*")
-            .eq("user_id", user.id)
-            .single()
-
-          // Create user profile if it doesn't exist
-          if (!existingProfile) {
-            await supabase.from("user_profiles").insert({
-              user_id: user.id,
-              email: user.email,
-              full_name: user.name,
-              avatar_url: user.image,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-          }
-          return true
-        } catch (error) {
-          console.error("Error during sign-in:", error)
-          return false
-        }
-      }
+      // Allow all demo credential sign-ins
       return true
     },
   },
@@ -93,10 +96,10 @@ export const authOptions: AuthOptions = {
   },
   events: {
     async signIn({ user, account, profile }) {
-      console.log(`User ${user.email} signed in with ${account?.provider}`)
+      console.log(`Demo user ${user.email} signed in`)
     },
     async signOut({ token }) {
-      console.log(`User signed out`)
+      console.log(`Demo user signed out`)
     },
   },
   debug: process.env.NODE_ENV === "development",

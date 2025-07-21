@@ -41,7 +41,7 @@ CREATE TABLE user_profiles (
   pregnancy_weeks INTEGER GENERATED ALWAYS AS (
     CASE 
       WHEN pregnancy_start_date IS NOT NULL 
-      THEN EXTRACT(days FROM (CURRENT_DATE - pregnancy_start_date)) / 7
+      THEN (CURRENT_DATE - pregnancy_start_date) / 7
       ELSE NULL 
     END
   ) STORED,
