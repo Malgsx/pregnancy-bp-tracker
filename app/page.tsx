@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { SignInButton } from "@/components/auth/signin-button"
+import { SimpleThemeToggle } from "@/components/ui/theme-toggle"
 import { Heart, Shield, Smartphone, BarChart3, Users, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -37,15 +38,18 @@ export default function Home() {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-3">
               <Heart className="h-8 w-8 text-pink-500 drop-shadow-sm" />
-              <span className="heading-responsive text-gray-900 font-bold tracking-tight">
+              <span className="heading-responsive text-foreground font-bold tracking-tight">
                 Pregnancy BP Tracker
               </span>
             </div>
-            <Button variant="pregnancy" size="lg" asChild>
-              <SignInButton provider="google">
-                Get Started
-              </SignInButton>
-            </Button>
+            <div className="flex items-center space-x-3">
+              <SimpleThemeToggle />
+              <Button variant="pregnancy" size="lg" asChild>
+                <SignInButton provider="google">
+                  Get Started
+                </SignInButton>
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

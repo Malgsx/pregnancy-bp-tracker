@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { UserNav } from "@/components/auth/user-nav"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 import Link from "next/link"
 import { Heart, BarChart3, User, Settings, Download } from "lucide-react"
 
@@ -35,37 +36,40 @@ export function ProtectedLayout({ children, title }: ProtectedLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <Link href="/dashboard" className="flex items-center space-x-2">
                 <Heart className="h-8 w-8 text-pink-500" />
-                <h1 className="text-xl font-bold text-gray-900">BP Tracker</h1>
+                <h1 className="text-xl font-bold text-card-foreground">BP Tracker</h1>
               </Link>
               {title && (
                 <>
-                  <span className="text-gray-300">/</span>
-                  <span className="text-gray-600">{title}</span>
+                  <span className="text-muted-foreground">/</span>
+                  <span className="text-muted-foreground">{title}</span>
                 </>
               )}
             </div>
-            <UserNav />
+            <div className="flex items-center space-x-3">
+              <ThemeToggle />
+              <UserNav />
+            </div>
           </div>
         </div>
       </header>
 
       <div className="flex">
         {/* Sidebar Navigation */}
-        <nav className="w-64 bg-white shadow-sm min-h-[calc(100vh-73px)]">
+        <nav className="w-64 bg-card shadow-sm min-h-[calc(100vh-73px)] border-r border-border">
           <div className="p-4">
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/dashboard"
-                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-3 text-card-foreground p-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <BarChart3 className="h-5 w-5" />
                   <span>Dashboard</span>
@@ -74,7 +78,7 @@ export function ProtectedLayout({ children, title }: ProtectedLayoutProps) {
               <li>
                 <Link
                   href="/readings"
-                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-3 text-card-foreground p-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <Heart className="h-5 w-5" />
                   <span>Readings</span>
@@ -83,7 +87,7 @@ export function ProtectedLayout({ children, title }: ProtectedLayoutProps) {
               <li>
                 <Link
                   href="/profile"
-                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-3 text-card-foreground p-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <User className="h-5 w-5" />
                   <span>Profile</span>
@@ -92,7 +96,7 @@ export function ProtectedLayout({ children, title }: ProtectedLayoutProps) {
               <li>
                 <Link
                   href="/export"
-                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-3 text-card-foreground p-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <Download className="h-5 w-5" />
                   <span>Export Data</span>
@@ -101,7 +105,7 @@ export function ProtectedLayout({ children, title }: ProtectedLayoutProps) {
               <li>
                 <Link
                   href="/settings"
-                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-3 text-card-foreground p-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <Settings className="h-5 w-5" />
                   <span>Settings</span>

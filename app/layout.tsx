@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/providers/session-provider";
 import ReactQueryProvider from "@/lib/react-query-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -26,21 +27,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <ReactQueryProvider>
-            {children}
-            <Toaster 
-              position="top-right" 
-              richColors 
-              closeButton
-              expand={true}
-            />
-          </ReactQueryProvider>
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <ReactQueryProvider>
+              {children}
+              <Toaster 
+                position="top-right" 
+                richColors 
+                closeButton
+                expand={true}
+              />
+            </ReactQueryProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
